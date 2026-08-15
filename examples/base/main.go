@@ -103,6 +103,14 @@ func main() {
 	// GitHub selfupdate
 	ghupdate.MustRegister(app, app.RootCmd, ghupdate.Config{})
 
+	// disable the server read/write deadlines to avoid "i/o timeout" errors on large uploads
+	app.OnServe().BindFunc(func(e *core.ServeEvent) error {
+		e.Server.ReadTimeout = 0
+		e.Server.WriteTimeout = 0
+
+		return e.Next()
+	})
+
 	// static route to serves files from the provided public dir
 	// (if publicDir exists and the route path is not already defined)
 	app.OnServe().Bind(&hook.Handler[*core.ServeEvent]{

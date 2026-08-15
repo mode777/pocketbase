@@ -1,0 +1,10 @@
+.git
+.gitignore
+pocketbase
+ui/node_modules
+__pycache__
+pb_data
+pb_backups
+pb_public
+tests/data
+*.md
